@@ -1,7 +1,7 @@
 <template>
   <div class="App">
-        <header class="header">Movies of 2018 (Vue)</header>
-        <MovieList />
+    <header class="header">Movies of 2018 (Vue)</header>
+    <MovieList/>
   </div>
 </template>
 
@@ -11,11 +11,11 @@ import MovieList from './components/MovieList.vue'
 export default {
   name: 'app',
   components: {
-    MovieList
-  }
+    MovieList,
+  },
 }
 </script>
 
 <style>
-  @import './App.css';
+@import './App.css';
 </style>
