@@ -44,22 +44,17 @@ export default {
       let titleOrder = this.titleOrder;
       let yearOrder = this.yearOrder;
       if (para == "name") {
-        movies.sort((a, b) => {
-          if (titleOrder == "asc") {
-            return a.Title.charCodeAt(0) - b.Title.charCodeAt(0);
-          }
-
-          return b.Title.charCodeAt(0) - a.Title.charCodeAt(0);
-        });
+        movies.sort((a, b) =>
+          titleOrder === "asc"
+            ? b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
+            : a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
+        );
         titleOrder = titleOrder == "asc" ? "dsc" : "asc";
-      } else {
-        movies.sort((a, b) => {
-          if (yearOrder == "asc") {
-            return a.Year - b.Year;
-          }
-
-          return b.Year - a.Year;
-        });
+      }
+      if (para === "year") {
+        movies.sort((a, b) =>
+          yearOrder == "asc" ? a.Year - b.Year : b.Year - a.Year
+        );
         yearOrder = yearOrder == "asc" ? "dsc" : "asc";
       }
 
