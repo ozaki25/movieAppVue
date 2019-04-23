@@ -46,13 +46,13 @@ export default {
       if (this.sortKey === "title") {
         return [...this.movies].sort((a, b) =>
           this.titleOrder === "asc"
-            ? b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
-            : a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
+            ? a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
+            : b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
         );
       }
       if (this.sortKey === "year") {
         return [...this.movies].sort((a, b) =>
-          this.yearOrder === "asc" ? b.Year - a.Year : a.Year - b.Year
+          this.yearOrder === "asc" ? a.Year - b.Year : b.Year - a.Year
         );
       }
       return this.movies;
