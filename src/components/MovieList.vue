@@ -2,12 +2,12 @@
   <div>
     <div class="flex table-header">
       <div>Poster</div>
-      <div @click="sort('name')">
+      <div @click="toggleTitleOrder()">
         Title
         <span class="arrow-up"></span>
         <span class="arrow-down"></span>
       </div>
-      <div @click="sort('year')">
+      <div @click="toggleYearOrder()">
         Year
         <span class="arrow-up"></span>
         <span class="arrow-down"></span>
@@ -25,11 +25,13 @@
 
 <script>
 export default {
-  data: () => ({
-    movies: [],
-    titleOrder: "asc",
-    yearOrder: "asc"
-  }),
+  data() {
+    return {
+      movies: [],
+      titleOrder: "",
+      yearOrder: ""
+    };
+  },
   mounted() {
     fetch("https://www.omdbapi.com/?apikey=a567cf6c&s=love&type=movie")
       .then(res => res.json())
@@ -38,29 +40,26 @@ export default {
       })
       .catch();
   },
+  watch: {
+    titleOrder(newProp) {
+      this.movies = [...this.movies].sort((a, b) =>
+        newProp === "asc"
+          ? b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
+          : a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
+      );
+    },
+    yearOrder(newProp) {
+      this.movies = [...this.movies].sort((a, b) =>
+        newProp === "asc" ? b.Year - a.Year : a.Year - b.Year
+      );
+    }
+  },
   methods: {
-    sort(para) {
-      const movies = this.movies;
-      let titleOrder = this.titleOrder;
-      let yearOrder = this.yearOrder;
-      if (para == "name") {
-        movies.sort((a, b) =>
-          titleOrder === "asc"
-            ? b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
-            : a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
-        );
-        titleOrder = titleOrder == "asc" ? "dsc" : "asc";
-      }
-      if (para === "year") {
-        movies.sort((a, b) =>
-          yearOrder == "asc" ? a.Year - b.Year : b.Year - a.Year
-        );
-        yearOrder = yearOrder == "asc" ? "dsc" : "asc";
-      }
-
-      this.movies = movies;
-      this.titleOrder = titleOrder;
-      this.yearOrder = yearOrder;
+    toggleTitleOrder() {
+      this.titleOrder = this.titleOrder === "asc" ? "dsc" : "asc";
+    },
+    toggleYearOrder() {
+      this.yearOrder = this.yearOrder === "asc" ? "dsc" : "asc";
     }
   }
 };
