@@ -13,7 +13,7 @@
         <span class="arrow-down"></span>
       </div>
     </div>
-    <div v-for="mov in movies" class="flex row" :key="mov.imdbId">
+    <div v-for="mov in sortedMovies" class="flex row" :key="mov.imdbId">
       <div>
         <img :src="mov.Poster" class="poster" />
       </div>
@@ -29,7 +29,8 @@ export default {
     return {
       movies: [],
       titleOrder: "",
-      yearOrder: ""
+      yearOrder: "",
+      sortKey: ""
     };
   },
   mounted() {
@@ -40,26 +41,31 @@ export default {
       })
       .catch();
   },
-  watch: {
-    titleOrder(newProp) {
-      this.movies = [...this.movies].sort((a, b) =>
-        newProp === "asc"
-          ? b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
-          : a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
-      );
-    },
-    yearOrder(newProp) {
-      this.movies = [...this.movies].sort((a, b) =>
-        newProp === "asc" ? b.Year - a.Year : a.Year - b.Year
-      );
+  computed: {
+    sortedMovies() {
+      if (this.sortKey === "title") {
+        return [...this.movies].sort((a, b) =>
+          this.titleOrder === "asc"
+            ? b.Title.charCodeAt(0) - a.Title.charCodeAt(0)
+            : a.Title.charCodeAt(0) - b.Title.charCodeAt(0)
+        );
+      }
+      if (this.sortKey === "year") {
+        return [...this.movies].sort((a, b) =>
+          this.yearOrder === "asc" ? b.Year - a.Year : a.Year - b.Year
+        );
+      }
+      return this.movies;
     }
   },
   methods: {
     toggleTitleOrder() {
       this.titleOrder = this.titleOrder === "asc" ? "dsc" : "asc";
+      this.sortKey = "title";
     },
     toggleYearOrder() {
       this.yearOrder = this.yearOrder === "asc" ? "dsc" : "asc";
+      this.sortKey = "year";
     }
   }
 };
